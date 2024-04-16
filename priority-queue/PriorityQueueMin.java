@@ -11,11 +11,15 @@ public class PriorityQueueMin{
   }
 
   public void insert(int item){
-    if (this.length == this.capacity){
+    if (isQueueFull()){
       growArray();
     }
     arr[this.length++] = item;
     heapifyUpMax();
+  }
+
+  public boolean isQueueFull(){
+    return this.length == this.capacity;
   }
 
   private void growArray(){
