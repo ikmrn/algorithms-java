@@ -40,8 +40,18 @@ public class PriorityQueueMin{
     }
     arr[i + 1] = value;
   }
+  public int remove() {
+    if (isEmpty()){
+      throw new IllegalStateException("Queue is empty");
+    } 
+    int value = arr[--this.length];
+    this.arr[this.length] = 0;
+    return value;
+  }
 
-  
+  public boolean isEmpty(){
+    return this.length == 0;
+  }
 
 
   @Override
