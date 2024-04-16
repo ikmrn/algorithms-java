@@ -41,6 +41,6 @@ public class ArrayQueue{
     for (int i = 0; i < size; ++i){
       printArray[i] = this.items[i + this.front];
     }
-    return Arrays.toString(this.items);
+    return Arrays.toString(printArray);
   }
 }
