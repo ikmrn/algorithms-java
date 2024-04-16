@@ -27,4 +27,25 @@ public class PriorityQueueMin{
     arr = newArr;
   }
 
+  public void heapifyUpMax(){
+    int value = this.arr[this.length-1];
+    int i;
+    for (i = this.length - 2; i >= 0; --i){
+      if (value > this.arr[i]){
+        this.arr[i + 1] = this.arr[i];
+      }
+      else {
+        break;
+      }
+    }
+    arr[i + 1] = value;
+  }
+
+  
+
+
+  @Override
+  public String toString(){
+    return Arrays.toString(this.arr);
+  }
 }
