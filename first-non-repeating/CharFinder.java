@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class CharFinder{
   public char findFirstNonRepeatingChar(String str){
     int[] hashArray = new int[52];
@@ -30,4 +32,24 @@ public class CharFinder{
     }
   }
 
+  public char findFirstRepeatingChar(String str){
+    char[] hashSet = new char[52];
+    for (int i = 0; i < str.length(); ++i){
+        char ch = str.charAt(i);  
+        if (Character.isAlphabetic(ch)) {
+          int idx = getHashValue(ch);
+            if (hashSet[idx] == ch){
+              return ch;
+            }
+        hashSet[idx] = ch; 
+        }
+    }
+    return '!';
+  }
+
+  @Override
+  public String toString(){
+    char[] hashSet = new char[52];
+    return Arrays.toString(hashSet);
+  }
 }
