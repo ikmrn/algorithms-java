@@ -54,6 +54,13 @@ public class Tree {
     return false;
   }
 
+  // Traversal types
+  public enum TraversalType {
+    PRE_ORDER,
+    POST_ORDER,
+    IN_ORDER
+  }
+
   /**
    * Performs a pre-order traversal of the binary tree.
    */
@@ -61,17 +68,59 @@ public class Tree {
     if (root == null) {
       throw new IllegalStateException("Tree is empty.");
     }
-    walk(root);
+    walk(root, TraversalType.PRE_ORDER);
+  }
+
+  /**
+   * Performs a in-order traversal of the binary tree.
+   */
+  public void inOrderTraversal() {
+    if (root == null) {
+      throw new IllegalStateException("Tree is empty.");
+    }
+    walk(root, TraversalType.IN_ORDER);
+  }
+
+  /**
+   * Performs a post-order traversal of the binary tree.
+   */
+  public void postOrderTraversal() {
+    if (root == null) {
+      throw new IllegalStateException("Tree is empty.");
+    }
+    walk(root, TraversalType.POST_ORDER);
   }
 
   // Helper method for pre-order traversal
-  private void walk(TreeNode curr) {
+  private void walk(TreeNode curr, TraversalType type) {
     if (curr == null)
       return;
 
-    System.out.println(curr.value);
-    walk(curr.leftChild);
-    walk(curr.rightChild);
+    if (isPreOrder(type)) {
+      System.out.println(curr.value);
+    }
+
+    walk(curr.leftChild, type);
+
+    if (isInOrder(type)) {
+      System.out.println(curr.value);
+    }
+
+    walk(curr.rightChild, type);
+
+    if (isPostOrder(type)) {
+      System.out.println(curr.value);
+    }
+  }
+
+  private boolean isPreOrder(TraversalType type){
+    return type == TraversalType.PRE_ORDER;
+  }
+  private boolean isInOrder(TraversalType type){
+    return type == TraversalType.IN_ORDER;
+  }
+  private boolean isPostOrder(TraversalType type){
+    return type == TraversalType.POST_ORDER;
   }
 
   private class TreeNode {
