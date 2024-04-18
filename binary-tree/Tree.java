@@ -54,6 +54,28 @@ public class Tree {
     return false;
   }
 
+  public void breadthFirstTraversal() {
+    if (root == null) {
+      throw new IllegalStateException("Tree is empty.");
+    }
+    Queue queue = new Queue();
+    queue.enqueue(root);
+    walkBreadth(root, queue);
+  }
+
+  public void walkBreadth(TreeNode curr, Queue queue) {
+    while (!queue.isEmpty()) {
+      TreeNode currNode = queue.dequeue();
+      System.out.println(currNode.value);
+      if (currNode.leftChild != null) {
+        queue.enqueue(currNode.leftChild);
+      }
+      if (currNode.rightChild != null) {
+        queue.enqueue(currNode.rightChild);
+      }
+    }
+  }
+
   // Traversal types
   public enum TraversalType {
     PRE_ORDER,
