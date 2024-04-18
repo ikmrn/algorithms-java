@@ -25,6 +25,23 @@ public class Tree {
     }
   }
 
+  public boolean find(int value) {
+    if (root == null) {
+      throw new IllegalStateException("Tree is empty.");
+    }
+    TreeNode curr = root;
+    while (curr != null) {
+      if (curr.value == value) {
+        return true;
+      }
+      if (value < curr.value) {
+        curr = curr.leftChild;
+      } else
+        curr = curr.rightChild;
+    }
+    return false;
+  }
+
   private class TreeNode {
     int value;
     TreeNode rightChild;
