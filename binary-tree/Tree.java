@@ -42,6 +42,23 @@ public class Tree {
     return false;
   }
 
+  public void preOrderTraversal() {
+    if (root == null) {
+      throw new IllegalStateException("Tree is empty.");
+    }
+    walk(root);
+  }
+
+  // Helper method for pre-order traversal
+  private void walk(TreeNode curr) {
+    if (curr == null)
+      return;
+
+    System.out.println(curr.value);
+    walk(curr.leftChild);
+    walk(curr.rightChild);
+  }
+
   private class TreeNode {
     int value;
     TreeNode rightChild;
