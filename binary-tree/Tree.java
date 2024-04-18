@@ -54,6 +54,17 @@ public class Tree {
     return false;
   }
 
+  public int findMinValue() {
+    if (root == null) {
+      throw new IllegalStateException("Tree is empty");
+    }
+    TreeNode curr = root;
+    while (curr.leftChild != null) {
+      curr = curr.leftChild;
+    }
+    return curr.value;
+  }
+
   public void breadthFirstTraversal() {
     if (root == null) {
       throw new IllegalStateException("Tree is empty.");
@@ -156,6 +167,41 @@ public class Tree {
       this.value = value;
       this.rightChild = this.leftChild = null;
     }
+  }
+
+  public boolean equals(Tree other) {
+
+    return equalsWalk(root, other.root);
+  }
+
+  private boolean equalsWalk(TreeNode first, TreeNode second) {
+    if (first == null && second == null) {
+      return true;
+    }
+    if (first == null || second == null) {
+      return false;
+    }
+    if (first.value != second.value) {
+      return false;
+    }
+
+    return (equalsWalk(first.leftChild, second.leftChild) &&
+        equalsWalk(first.rightChild, second.rightChild));
+  }
+
+  public boolean isBinarySearchTree() {
+    return isBinarySearchTreeWalk(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+  }
+
+  private boolean isBinarySearchTreeWalk(TreeNode node, int min, int max) {
+    if (node == null)
+      return true;
+
+    if (node.value < min && node.value > max) {
+      return false;
+    }
+    return isBinarySearchTreeWalk(node.leftChild, min, node.value - 1) &&
+        isBinarySearchTreeWalk(node.rightChild, node.value + 1, max);
   }
 
   private class Node {
