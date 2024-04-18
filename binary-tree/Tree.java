@@ -91,7 +91,7 @@ public class Tree {
     walk(root, TraversalType.POST_ORDER);
   }
 
-  // Helper method for pre-order traversal
+  // Helper methods, TreeNode and Queue inner classes
   private void walk(TreeNode curr, TraversalType type) {
     if (curr == null)
       return;
@@ -113,13 +113,15 @@ public class Tree {
     }
   }
 
-  private boolean isPreOrder(TraversalType type){
+  private boolean isPreOrder(TraversalType type) {
     return type == TraversalType.PRE_ORDER;
   }
-  private boolean isInOrder(TraversalType type){
+
+  private boolean isInOrder(TraversalType type) {
     return type == TraversalType.IN_ORDER;
   }
-  private boolean isPostOrder(TraversalType type){
+
+  private boolean isPostOrder(TraversalType type) {
     return type == TraversalType.POST_ORDER;
   }
 
@@ -133,4 +135,47 @@ public class Tree {
       this.rightChild = this.leftChild = null;
     }
   }
+
+  private class Node {
+    TreeNode value;
+    Node next;
+
+    public Node(TreeNode value) {
+      this.value = value;
+      this.next = null;
+    }
+  }
+
+  private class Queue {
+    Node head = null;
+    Node tail = null;
+
+    public void enqueue(TreeNode value) {
+      Node node = new Node(value);
+      if (this.tail == null) {
+        this.tail = this.head = node;
+        return;
+      }
+      this.tail.next = node;
+      this.tail = node;
+    }
+
+    public TreeNode dequeue() {
+      if (this.head == null) {
+        throw new IllegalStateException("Queue is empty.");
+      }
+      TreeNode value = this.head.value;
+      if (this.head.next == null) {
+        this.head = this.tail = null;
+      } else {
+        this.head = this.head.next;
+      }
+      return value;
+    }
+
+    public boolean isEmpty() {
+      return this.head == null;
+    }
+  }
+
 }
