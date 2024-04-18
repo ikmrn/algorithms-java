@@ -1,6 +1,12 @@
 public class Tree {
   TreeNode root;
 
+  /**
+   * Inserts a new node with the given value into the binary tree.
+   *
+   * @param value the value to insert
+   */
+
   public void insert(int value) {
     TreeNode node = new TreeNode(value);
     if (root == null) {
@@ -25,6 +31,12 @@ public class Tree {
     }
   }
 
+  /**
+   * Checks if the given value exists in the binary tree.
+   *
+   * @param value the value to find
+   * @return true if the value exists, false otherwise
+   */
   public boolean find(int value) {
     if (root == null) {
       throw new IllegalStateException("Tree is empty.");
@@ -42,6 +54,9 @@ public class Tree {
     return false;
   }
 
+  /**
+   * Performs a pre-order traversal of the binary tree.
+   */
   public void preOrderTraversal() {
     if (root == null) {
       throw new IllegalStateException("Tree is empty.");
