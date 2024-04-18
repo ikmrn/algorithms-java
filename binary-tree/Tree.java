@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Tree {
   TreeNode root;
 
@@ -197,11 +199,46 @@ public class Tree {
     if (node == null)
       return true;
 
-    if (node.value < min && node.value > max) {
+    if (node.value < min || node.value > max) {
       return false;
     }
     return isBinarySearchTreeWalk(node.leftChild, min, node.value - 1) &&
         isBinarySearchTreeWalk(node.rightChild, node.value + 1, max);
+  }
+
+  public void addToLastRightLeaf(int item) {
+    TreeNode node = new TreeNode(item);
+    if (root == null) {
+      root = node;
+      return;
+    }
+    TreeNode curr = root;
+    while (curr.rightChild != null) {
+      curr = curr.rightChild;
+    }
+    curr.rightChild = node;
+  }
+
+  public ArrayList<Integer> getNodesAtKDistance(int k) {
+    if (root == null) {
+      throw new IllegalStateException("Tree is empty");
+    }
+    var list = new ArrayList<Integer>();
+    getKNodesFromRoot(root, k, list);
+    return list;
+  }
+
+  private void getKNodesFromRoot(TreeNode curr, int k, ArrayList<Integer> arr) {
+    if (curr == null) {
+      return;
+    }
+    if (k == 0) {
+      arr.add(curr.value);
+      return;
+    }
+    k--;
+    getKNodesFromRoot(curr.leftChild, k, arr);
+    getKNodesFromRoot(curr.rightChild, k, arr);
   }
 
   private class Node {
