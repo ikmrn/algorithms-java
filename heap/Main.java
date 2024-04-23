@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Main {
   public static void main(String[] args) {
     MaxHeap heap = new MaxHeap(5);
@@ -33,8 +35,13 @@ public class Main {
     heap.remove();
     heap.remove();
     heap.remove();
-    heap.remove();
     System.out.println(heap.printString());
     System.out.println(heap.tail);
+    System.out.println("<<<<<< HEAPIFY >>>>>>>");
+    int[] numbers = { 5, 3, 8, 4, 1, 2,  7, 1};
+    System.out.println(Arrays.toString(numbers));
+    Heapify.heapify(numbers);
+    System.out.println(Arrays.toString(numbers));
   }
+
 }
