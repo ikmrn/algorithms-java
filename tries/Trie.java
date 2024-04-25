@@ -3,44 +3,22 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Trie {
-
-  private Node root = new Node(' ');
+  Node root = new Node(' ');
 
   public void insert(String word) {
     Node curr = this.root;
-    for (var ch : word.toCharArray()) {
+    for (char ch : word.toCharArray()) {
       if (!curr.hasChild(ch)) {
         curr.addChild(ch);
       }
       curr = curr.getChild(ch);
     }
-    curr.isEndOfWord = true;
-  }
-
-  public boolean contains(String word) {
-    Node curr = root;
-    for (var ch : word.toCharArray()) {
-      if (!curr.hasChild(ch))
-        return false;
-      curr = curr.getChild(ch);
-    }
-    return curr.isEndOfWord;
-  }
-
-  public void traverse() {
-    walkTraverse(root);
-  }
-
-  private void walkTraverse(Node root) {
-    // Pre-order
-    System.out.println(root.value);
-    for (Node child : root.getChildren()) {
-      walkTraverse(child);
-    }
+    curr.isEnd = true;
   }
 
   public void remove(String word) {
     if (word == null) {
+      System.out.println("No word provided");
       return;
     }
     walkRemove(root, word, 0);
@@ -48,59 +26,93 @@ public class Trie {
 
   private void walkRemove(Node root, String word, int idx) {
     if (idx == word.length()) {
-      root.isEndOfWord = false;
+      root.isEnd = false;
       return;
     }
     char ch = word.charAt(idx);
-    Node child = root.getChild(ch);
-    if (child == null) {
+    idx++;
+    if (!root.hasChild(ch)) {
+      System.out.println("No Such Word.");
       return;
     }
-    walkRemove(child, word, idx + 1);
-
-    if (!child.hasChildren() && !child.isEndOfWord)
+    Node child = root.getChild(ch);
+    walkRemove(child, word, idx);
+    if (!child.hasChildren() && !child.isEnd) {
       root.removeChild(ch);
-    ;
+    }
+  }
+
+  public boolean contains(String word) {
+    Node curr = this.root;
+    for (char ch : word.toCharArray()) {
+      if (!curr.hasChild(ch)) {
+        return false;
+      }
+      curr = curr.getChild(ch);
+    }
+    return curr.isEnd;
   }
 
   public List<String> autocomplete(String prefix) {
-    List<String> words = new ArrayList<>();
-    var lastNode = findLastNode(prefix);
-    findWords(lastNode, prefix, words);
-
-    return words;
-
-  }
-
-  private void findWords(Node root, String prefix, List<String> words) {
-
+    List<String> result = new ArrayList<>();
+    Node lastNode = findLastNode(prefix);
+    if (lastNode == null) {
+      System.out.println("No word that begins " + "'" + prefix + "'" + " in our database");
+      return result;
+    }
+    autocompleteWalk(lastNode, result, prefix);
+    return result;
   }
 
   private Node findLastNode(String prefix) {
-    var curr = root;
+    Node curr = root;
     for (char ch : prefix.toCharArray()) {
-      var child = curr.getChild(ch);
+      Node child = curr.getChild(ch);
       if (child == null) {
         return null;
       }
       curr = child;
     }
     return curr;
+  }
 
+  private void autocompleteWalk(Node currNode, List<String> arrList, String prefix) {
+    if (!currNode.hasChildren() || currNode.isEnd == true) {
+      // prefix = prefix + currNode.value;
+      arrList.add(prefix);
+    }
+
+    for (Node child : currNode.getChildren()) {
+      String word = prefix + child.value;
+      autocompleteWalk(child, arrList, word);
+    }
+  }
+
+  public void traverse() {
+    walkTraverse(root);
+  }
+
+  public void walkTraverse(Node root) {
+    if (!root.hasChildren()) {
+      return;
+    }
+    for (Node child : root.getChildren()) {
+      System.out.println(child.value);
+      walkTraverse(child);
+    }
   }
 
   private class Node {
     char value;
-    private HashMap<Character, Node> children = new HashMap<>();
-    boolean isEndOfWord;
+    HashMap<Character, Node> children = new HashMap<>();
+    boolean isEnd;
 
-    public Node(char character) {
-      this.value = character;
+    public Node(char ch) {
+      this.value = ch;
     }
 
-    @Override
-    public String toString() {
-      return "value" + value;
+    public Node getChild(char ch) {
+      return children.get(ch);
     }
 
     public boolean hasChild(char ch) {
@@ -111,16 +123,12 @@ public class Trie {
       children.put(ch, new Node(ch));
     }
 
-    public Node getChild(char ch) {
-      return children.get(ch);
+    public boolean hasChildren() {
+      return !children.isEmpty();
     }
 
     public Node[] getChildren() {
       return children.values().toArray(new Node[0]);
-    }
-
-    public boolean hasChildren() {
-      return !children.isEmpty();
     }
 
     public void removeChild(char ch) {
