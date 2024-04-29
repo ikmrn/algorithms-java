@@ -7,6 +7,7 @@ public class Main {
     int[] arrSelection = { 7, 3, 1, 4, 6, 2, 3 };
     int[] arrInsertion = { 7, 3, 1, 4, 6, 2, 3 };
     int[] arrMerge = { 7, 3, 1, 4, 6, 2, 3 };
+    int[] arrQuick = { 7, 3, 1, 4, 6, 2, 3 };
     System.out.println("Original array:  " + Arrays.toString(arr));
 
     BubbleSort bubbleSorter = new BubbleSort();
@@ -24,6 +25,10 @@ public class Main {
     MergeSort MergeSorter = new MergeSort();
     MergeSorter.sort(arrMerge);
     System.out.println("Merge sort:      " + Arrays.toString(arrMerge));
+
+    QuickSort QuickSorter = new QuickSort();
+    QuickSorter.sort(arrQuick);
+    System.out.println("Quick sort:      " + Arrays.toString(arrQuick));
 
   }
 }
