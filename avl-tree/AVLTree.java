@@ -1,116 +1,165 @@
 public class AVLTree {
-  private AVLNode root;
+  AvlNode root;
 
   public void insert(int value) {
-    root = insertInRightPosition(this.root, value);
+    this.root = insertAtRightPosition(this.root, value);
   }
 
-  private AVLNode insertInRightPosition(AVLNode root, int value) {
-    if (root == null) {
-      return new AVLNode(value);
-    }
+  public void breadthTraversal() {
+    MyQueue<AvlNode> queue = new MyQueue<>();
+    queue.enqueue(this.root);
 
-    if (value < root.value) {
-      root.leftChild = insertInRightPosition(root.leftChild, value);
+    while (!queue.isEmpty()) {
+      AvlNode node = queue.dequeue();
+      System.out.println(node.value);
 
-    } else {
-      root.rightChild = insertInRightPosition(root.rightChild, value);
-    }
-    setNodeHeight(root);
-
-    return balance(root);
-  }
-
-  private AVLNode balance(AVLNode root) {
-    int balanceFactor = getBalanceFactor(root);
-    if (isLeftHeavy(balanceFactor)) {
-      if (getBalanceFactor(root.leftChild) < 0) {
-        root.leftChild = rotateLeft(root.leftChild);
+      if (node.leftChild != null) {
+        queue.enqueue(node.leftChild);
       }
-      return rotateRight(root);
-
-    } else if (isRightHeavy(balanceFactor)) {
-      if (getBalanceFactor(root.rightChild) > 0) {
-        root.rightChild = rotateRight(root.rightChild);
+      if (node.rightChild != null) {
+        queue.enqueue(node.rightChild);
       }
-      return rotateLeft(root);
     }
-    return root;
-  }
-
-  private AVLNode rotateLeft(AVLNode root) {
-    AVLNode newRoot = root.rightChild;
-    root.rightChild = newRoot.leftChild;
-    newRoot.leftChild = root;
-
-    setNodeHeight(root);
-    setNodeHeight(newRoot);
-    return newRoot;
-  }
-
-  private AVLNode rotateRight(AVLNode root) {
-    AVLNode newRoot = root.leftChild;
-    root.leftChild = newRoot.rightChild;
-    newRoot.rightChild = root;
-
-    setNodeHeight(root);
-    setNodeHeight(newRoot);
-    return newRoot;
-  }
-
-  private void setNodeHeight(AVLNode node) {
-    node.height = Math.max(
-        getHeight(node.leftChild), getHeight(node.rightChild)) + 1;
-  }
-
-  private int getBalanceFactor(AVLNode node) {
-    return (node == null) ? 0 : getHeight(node.leftChild) - getHeight(node.rightChild);
-
-  }
-
-  private boolean isLeftHeavy(int balanceFactor) {
-    return balanceFactor > 1;
-  }
-
-  private boolean isRightHeavy(int balanceFactor) {
-    return balanceFactor < -1;
-  }
-
-  private int getHeight(AVLNode node) {
-    return (node == null) ? -1 : node.height;
   }
 
   public void preOrderTraversal() {
-    if (this.root == null) {
-      throw new IllegalStateException("Tree is empty");
-    }
-    preOrderWalk(root);
+    preOrderWalk(this.root);
   }
 
-  private void preOrderWalk(AVLNode curr) {
-    if (curr == null) {
+  private void preOrderWalk(AvlNode node) {
+    if (node == null) {
       return;
     }
-    System.out.println(curr.value);
-
-    preOrderWalk(curr.leftChild);
-    preOrderWalk(curr.rightChild);
+    System.out.println(node.value);
+    preOrderWalk(node.leftChild);
+    preOrderWalk(node.rightChild);
   }
 
-  private class AVLNode {
-    private int value;
-    private AVLNode leftChild;
-    private AVLNode rightChild;
-    private int height;
-
-    public AVLNode(int val) {
-      this.value = val;
-      leftChild = rightChild = null;
+  private AvlNode insertAtRightPosition(AvlNode node, int value) {
+    if (node == null) {
+      return new AvlNode(value);
+    }
+    if (value < node.value) {
+      node.leftChild = insertAtRightPosition(node.leftChild, value);
+    } else {
+      node.rightChild = insertAtRightPosition(node.rightChild, value);
     }
 
-    @Override
-    public String toString() {
-      return "Value" + this.value;
+    setHeight(node);
+    return balance(node);
+  }
+
+  private AvlNode balance(AvlNode node) {
+    int balanceFactor = getBalanceFactor(node);
+    if (isLeftHeavy(balanceFactor)) {
+      if (getBalanceFactor(node.leftChild) < 0)
+        node.leftChild = rotateLeft(node.leftChild);
+      return rotateRight(node);
+    }
+    if (isRightHeavy(balanceFactor)) {
+      if (getBalanceFactor(node.rightChild) > 0)
+        node.rightChild = rotateRight(node.rightChild);
+      return rotateLeft(node);
+    }
+
+    return node;
+  }
+
+  private AvlNode rotateLeft(AvlNode node) {
+    AvlNode newNode = node.rightChild;
+    node.rightChild = newNode.leftChild;
+    newNode.leftChild = node;
+
+    setHeight(node);
+    setHeight(newNode);
+    return newNode;
+  }
+
+  private AvlNode rotateRight(AvlNode node) {
+    AvlNode newNode = node.leftChild;
+    node.leftChild = newNode.rightChild;
+    newNode.rightChild = node;
+
+    setHeight(node);
+    setHeight(newNode);
+    return newNode;
+  }
+
+  private int getBalanceFactor(AvlNode node) {
+    return getHeight(node.leftChild) - getHeight(node.rightChild);
+  }
+
+  private boolean isLeftHeavy(int value) {
+    return value > 1;
+  }
+
+  private boolean isRightHeavy(int value) {
+    return value < -1;
+  }
+
+  private void setHeight(AvlNode node) {
+    node.height = maxHeight(
+        getHeight(node.leftChild), getHeight(node.rightChild)) + 1;
+  }
+
+  private int maxHeight(int a, int b) {
+    return (a > b) ? a : b;
+  }
+
+  private int getHeight(AvlNode node) {
+    return (node == null) ? 0 : node.height;
+  }
+
+  private class AvlNode {
+    int value, height;
+    AvlNode leftChild;
+    AvlNode rightChild;
+
+    public AvlNode(int value) {
+      this.value = value;
+      this.height = 1;
+    }
+  }
+
+  private class MyQueue<E> {
+    QueueNode<E> head;
+    QueueNode<E> tail;
+
+    public void enqueue(E node) {
+      QueueNode<E> newNode = new QueueNode<>(node);
+      if (this.tail == null) {
+        this.head = this.tail = newNode;
+      } else {
+        this.tail.next = newNode;
+        this.tail = newNode;
+      }
+    }
+
+    public E dequeue() {
+      if (this.tail == null) {
+        throw new IllegalStateException("Queue is empty.");
+      }
+      E returnValue = this.head.item;
+      if (this.head.next == null) {
+        this.head = this.tail = null;
+        return returnValue;
+      }
+      this.head = this.head.next;
+      return returnValue;
+    }
+
+    public boolean isEmpty() {
+      return this.head == null;
+    }
+  }
+
+  private class QueueNode<T> {
+    T item;
+    QueueNode<T> next;
+
+    public QueueNode(T item) {
+      this.item = item;
+      this.next = null;
     }
   }
 }
