@@ -4,12 +4,13 @@ public class QuickSort {
   }
 
   private void quickSort(int[] arr, int leftIdx, int rightIdx) {
-    if (leftIdx < rightIdx) {
-      int pivotIdx = partition(arr, leftIdx, rightIdx);
+    if (leftIdx >= rightIdx)
+      return;
 
-      quickSort(arr, leftIdx, pivotIdx - 1);
-      quickSort(arr, pivotIdx + 1, rightIdx);
-    }
+    int pivotIdx = partition(arr, leftIdx, rightIdx);
+
+    quickSort(arr, leftIdx, pivotIdx - 1);
+    quickSort(arr, pivotIdx + 1, rightIdx);
   }
 
   private int partition(int[] arr, int leftIdx, int rightIdx) {
@@ -19,12 +20,10 @@ public class QuickSort {
 
     swap(arr, pivotIdx, rightIdx);
 
-    for (int i = leftIdx; i < rightIdx; ++i) {
-      if (arr[i] < pivotValue) {
-        pointer++;
-        swap(arr, pointer, i);
-      }
-    }
+    for (int i = leftIdx; i < rightIdx; ++i)
+      if (arr[i] < pivotValue)
+        swap(arr, ++pointer, i);
+
     pointer++;
     swap(arr, pointer, rightIdx);
     return pointer;
