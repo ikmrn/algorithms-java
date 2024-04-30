@@ -9,7 +9,7 @@ public class Main {
     int[] arrMerge = { 7, 3, 1, 4, 6, 2, 3 };
     int[] arrQuick = { 7, 3, 1, 4, 6, 2, 3 };
     int[] arrCounting = { 7, 3, 1, 4, 6, 2, 3 };
-    int[] arrBucket = { 7, 3, 1, 4, 6, 2, 3 };
+    int[] arrBucket = { 7, 3, 1, 4, 6, 2, 323, 3 };
     System.out.println("Original array:  " + Arrays.toString(arr));
 
     BubbleSort bubbleSorter = new BubbleSort();
@@ -37,7 +37,7 @@ public class Main {
     System.out.println("Counting sort:   " + Arrays.toString(arrCounting));
 
     BucketSort BucketSorter = new BucketSort();
-    BucketSorter.sort(arrBucket, 2);
+    BucketSorter.sort(arrBucket, 3);
     System.out.println("Bucket sort:     " + Arrays.toString(arrBucket));
 
   }
